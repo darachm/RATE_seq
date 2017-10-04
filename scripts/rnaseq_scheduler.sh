@@ -19,7 +19,7 @@ emailString="dhm267@nyu.edu"
 experimentName="testing"
 
 # What kind of sequencing are you trying to analyze?
-isPE=0  #0 if SE
+isPE=1  #0 if SE
 isUMI=0 #1 if UMIs used
 
 # How many basepairs?
@@ -41,7 +41,7 @@ rseqc="rseqc/intel/2.6.4"
 
 ### Paths
 # Input data, where the fastqs you're trying to align
-INPUT_DATA_DIR='/scratch/cgsb/gencore/out/Gresham/2017-08-09_HN2WTAFXX/merged/'
+INPUT_DATA_DIR='/scratch/cgsb/gencore/out/Gresham/2017-08-09_HN2WTAFXX/merged'
 # HISAT2 index file
 HISAT_INDEX='/genomics/genomes/Public/Fungi/Saccharomyces_cerevisiae/NCBI/R64/GCF_000146045.2_R64_genomic_hisat_index/genome'
 # Reference GFF file, for counting and things
@@ -58,28 +58,37 @@ if [ ! -d ${LOGS} ]; then mkdir ${LOGS}; fi
 # ... we'll do that later
 # For now, we just list and do this direct
 # List of input files
-INPUT_FILES=($(ls $DIR/*fastq.gz | perl -pe 's/^.+n0\d_(.+)\.fastq\.gz/$1/g' | sort | uniq))
-## $ID will hold the sample_id
-#ID=${FILES[$SLURM_ARRAY_TASK_ID]}
+INPUT_FILES=($( ls $INPUT_DATA_DIR/*fastq.gz ))
+ID_LIST=( $( echo ${INPUT_FILES[@]} | \
+  perl -pe 's/[^\s]+n0[0-2]_(.+?)\.fastq\.gz/$1/g' | sort | uniq 
+  ) )
 
-for i in $(seq 1 $#{FILES}); do
-  echo $i
+echo "I see IDs:
+  ${ID_LIST[@]}"
+echo
+
+for THIS_SAMPLE_ID in ${ID_LIST[@]} ; do
+
+  echo "Scheduling for ID ${THIS_SAMPLE_ID}"
+
+#  INPUT_FILE_LIST=$( ls $INPUT_DATA_DIR/*n0[0-2]_${THIS_SAMPLE_ID}*.fastq.gz )
+
+#  echo "  I see ${INPUT_FILE_LIST[@]}"
+#  echo
+
+#  if [ isPE == 1]; then
+    ## full paths to paired mate files
+#    INPUT_1=$(ls $DIR/*n01_$ID.fastq.gz)
+#    INPUT_2=$(ls $DIR/*n02_$ID.fastq.gz)
+#
+#    ##perform adaptor and quality trimming
+
 done
 
 
 
 
 
-
-#if [ isPE == 0]
-#
-#then
-#    
-#    ## full paths to paired mate files
-#    INPUT_1=$(ls $DIR/*n01_$ID.fastq.gz)
-#    INPUT_2=$(ls $DIR/*n02_$ID.fastq.gz)
-#
-#    ##perform adaptor and quality trimming
 #
 #TRIM_RUNSTRING="sbatch 
 #  --mail-type=BEGIN,END,FAIL --mail-user=${emailString} 
