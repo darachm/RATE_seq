@@ -1,7 +1,18 @@
-# RATE_seq
+# RNA seq-ing analysis
 
-These scripts are for:
+`./scripts`
 
-1. Performing fits to RATE-seq data
-2. Simulating RATE-seq data
-3. Testing the effects of experimental design variables on RATE-seq results
+: contains scripts, named as `pipeline_function`, with the intent to
+  remove the pipeline name from them later.
+
+`./data`
+
+: is some data for testing
+
+`./tmp`
+
+: is a scratch folder. Not named that for tab-completion's sake.
+
+`./out`
+
+: is some output files. Check it out.
