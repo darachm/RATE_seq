@@ -22,8 +22,8 @@ sbatchify(){
       sbatch
         --mail-type=BEGIN,END,FAIL --mail-user=${USER}@nyu.edu
         --job-name=${STEP_NAME}
-        --output=${LOCAL_DIR_LOGS}/%A_${STEP_NAME}_GFFread.out 
-        --error=${LOCAL_DIR_LOGS}/%A_${STEP_NAME}_GFFread.err 
+        --output=${LOCAL_DIR_LOGS}/%A_${STEP_NAME}.out 
+        --error=${LOCAL_DIR_LOGS}/%A_${STEP_NAME}.err 
         ${STEP_RESOURCES}
         --wrap=\"${STEP_STRING}\"
     ;"
@@ -33,8 +33,8 @@ sbatchify(){
         --mail-type=BEGIN,END,FAIL --mail-user=${USER}@nyu.edu
         --job-name=${STEP_NAME}
         --dependency=afterok:${DEPENDS_ON}
-        --output=${LOCAL_DIR_LOGS}/%A_${STEP_NAME}_GFFread.out 
-        --error=${LOCAL_DIR_LOGS}/%A_${STEP_NAME}_GFFread.err 
+        --output=${LOCAL_DIR_LOGS}/%A_${STEP_NAME}.out 
+        --error=${LOCAL_DIR_LOGS}/%A_${STEP_NAME}.err 
         ${STEP_RESOURCES}
         --wrap=\"${STEP_STRING}\"
     ;"
