@@ -71,10 +71,26 @@ for THIS_SAMPLE_ID in ${ID_LIST[@]} ; do
 
   echo "Scheduling for ID ${THIS_SAMPLE_ID}"
 
-#  INPUT_FILE_LIST=$( ls $INPUT_DATA_DIR/*n0[0-2]_${THIS_SAMPLE_ID}*.fastq.gz )
+  THIS_SAMPLE_FILES=( $( \
+    ls ${INPUT_DATA_DIR}/*n0[12]_${THIS_SAMPLE_ID}.fastq.gz ) )
 
-#  echo "  I see ${INPUT_FILE_LIST[@]}"
-#  echo
+  echo "I see files ${THIS_SAMPLE_FILES[@]} with that sample ID."
+
+  isPE=$( eval ${ ${#THIS_SAMPLE_FILES[@]}-1 } )
+  
+  echo ${isPE}
+
+  echo -n "Since there are ${#THIS_SAMPLE_FILES[@]}, I conclude that
+    the files are "
+  if [ "${isPE}" = 0 ] ; then
+    echo "single ended reads."
+  elif [ "${isPE}" = 1 ] ; then
+    echo "paired end reads."
+  else
+    echo "... I dunno. Giving up on this sample."
+    (>&2 echo "ERROR: Sample ${THIS_SAMPLE_ID} saw ${#THIS_SAMPLE_FILES[@]} files, so gave up. Suggestion action." )
+    continue
+  fi
 
 #  if [ isPE == 1]; then
     ## full paths to paired mate files
@@ -83,13 +99,11 @@ for THIS_SAMPLE_ID in ${ID_LIST[@]} ; do
 #
 #    ##perform adaptor and quality trimming
 
+  exit
+
 done
 
 
-
-
-
-#
 #TRIM_RUNSTRING="sbatch 
 #  --mail-type=BEGIN,END,FAIL --mail-user=${emailString} 
 #  --job-name=${experimentName}_Trimming
