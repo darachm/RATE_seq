@@ -4,7 +4,7 @@
 # LOG in your current environment. This is done, not an argument, to
 # make it super easy to write it in and more readable.
 log(){
-  echo $1 | tee -a ${LOG}
+  echo "\n $1 \n" | tee -a ${LOG}
 }
 
 # This will submit your string as an sbatch, with dependencies,
